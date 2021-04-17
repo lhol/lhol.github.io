@@ -1,19 +1,105 @@
 <html>
 <head>
-<script> 
-    xmldoc = new ActiveXObject("Microsoft.XMLDOM"); 
-    xmldoc.async = false; 
-    xmldoc.load("Elaine.xml"); 
-    xsldoc = new ActiveXObject("Microsoft.XMLDOM"); 
-    xsldoc.async = false; 
-    xsldoc.load("Warhammer2ndCharacter.XSL"); 
- </script> 
+<script>
+function loadXMLDoc(dname) {
+    if (window.XMLHttpRequest) {
+        xhttp = new XMLHttpRequest();
+    } else {
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhttp.open("GET", dname, false);
+    xhttp.send("");
+    return xhttp.responseXML;
+}
 
+function displayResult(source,styledoc) {
+    xml = loadXMLDoc(source);
+    xsl = loadXMLDoc(styledoc);
+    //set a &nbsp to make prevent FF to append the text by double click
+    document.getElementById("mydiv").innerHTML = "&nbsp;";
+    // code for IE
+    if (window.ActiveXObject) {
+        ex = xml.transformNode(xsl);
+        document.getElementById("mydiv").innerHTML = ex;
+    }
+    // code for Mozilla, Firefox, Opera, etc.
+    else if (document.implementation && document.implementation.createDocument) {
+        xsltProcessor = new XSLTProcessor();
+        xsltProcessor.importStylesheet(xsl);
+        resultDocument = xsltProcessor.transformToFragment(xml, document);
+        document.getElementById("mydiv").appendChild(resultDocument);
+    }
+}
+</script>
 </head>
 <body> 
-    Start Warhammer Character Test
- <script> 
-    document.write(xmldoc.transformNode(xsldoc)); 
- </script>
-     End Warhammer Character Test
- </body>
+<a onclick="displayResult('Elaine.xml','Warhammer2ndCharacter.XSL')" href="javascript:void(0);">catalog 1</a> 
+<a onclick="displayResult('cdcatalog2.xml','cdcatalog.xsl')" href="javascript:void(0);">catalog 2</a> 
+<div id="mydiv">
+</div>
+</body>
+</html>
+<!--
+cdcatalog.xml
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<catalog>
+  <cd>
+    <title>Empire Burlesque</title>
+    <artist>Bob Di.</artist>
+    <country>USA</country>
+    <company>Columbia</company>
+    <price>10.90</price>
+    <year>1985</year>
+  </cd>
+</catalog>
+
+cdcatalog2.xml
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<catalog>
+  <cd>
+    <title>Some title </title>
+    <artist>Some artist</artist>
+    <country>USA</country>
+    <company>Columbia</company>
+    <price>10.90</price>
+    <year>1985</year>
+  </cd>
+    <cd>
+    <title>Some othertitle </title>
+    <artist>The artist</artist>
+    <country>USA</country>
+    <company>Columbia</company>
+    <price>11.40</price>
+    <year>1985</year>
+  </cd>
+</catalog>
+
+cdcatalog.xsl
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsl:stylesheet version="1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:template match="/">
+  <html>
+  <body>
+  <h2>My CD Collection</h2>
+  <table border="1">
+    <tr bgcolor="#9acd32">
+      <th align="left">Title</th>
+      <th align="left">Artist</th>
+    </tr>
+    <xsl:for-each select="catalog/cd">
+    <tr>
+      <td><xsl:value-of select="title" /></td>
+      <td><xsl:value-of select="artist" /></td>
+    </tr>
+    </xsl:for-each>
+  </table>
+  </body>
+  </html>
+</xsl:template>
+</xsl:stylesheet>
+-->
