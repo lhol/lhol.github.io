@@ -10,15 +10,42 @@
        
 		<xsl:for-each select="//character">
 		
-		        <table>
-            		<xsl:for-each select="advancedskills/*">
+            <h2>Skills</h2>
+            <table>
+            <tr>
+            <td>Skill</td><td>Basisattribut</td><td>Skillroll</td>
+            </tr>
+            <xsl:for-each select="advancedskills/*">
                         <tr>
                             <td><xsl:value-of select="name" /></td>
                             <td><xsl:value-of select="statname" /></td>
                             <td><xsl:value-of select="stat" /></td>
                         </tr>
 			</xsl:for-each>
-            		</table>
+            </table>
+            
+            <h2>Waffen</h2>
+            <table>
+            <tr>
+            <td>Name</td><td>Attack</td><td>MightyBonus</td><td>Parry</td><td>Damage</td><td>Strength</td></tr>
+            <xsl:for-each select="weaponlist/*">
+                        <tr>
+                            <td><xsl:value-of select="name" /></td>
+                            <xsl:if test="class=Melee">
+                                WS:<xsl:value-of select="attack/weapon" />
+                                <td><xsl:value-of select="mightyblow" /></td>
+                            </xsl:if>
+                            <xsl:if test="class=Ranged">
+                                WS:<xsl:value-of select="attack/ballistic" />
+                                <td><xsl:value-of select="mightyshot" /></td>
+                            </xsl:if>
+                            <td><xsl:value-of select="parryroll" /></td>
+                            <td><xsl:value-of select="damagedice" /></td>
+                            <td><xsl:value-of select="damagebonus" /></td>
+                        </tr>
+			</xsl:for-each>
+            </table>
+
 			<xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'" />
 			<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 			<xsl:variable name="strBonus" select="abilities/strength/bonus" />
