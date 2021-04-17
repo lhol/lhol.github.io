@@ -7,7 +7,8 @@
 />
 
   <xsl:template match="/">
-       
+<html>
+	<body>
 		<xsl:for-each select="//character">
 		
             <h2>Skills</h2>
@@ -284,6 +285,8 @@
 		</xsl:for-each>
 
 
+	</body>
+		</html>
   </xsl:template>
   
 	<xsl:template name="checkboxes">
