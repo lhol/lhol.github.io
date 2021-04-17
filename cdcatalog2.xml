@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<catalog>
+  <cd>
+    <title>Some title </title>
+    <artist>Some artist</artist>
+    <country>USA</country>
+    <company>Columbia</company>
+    <price>10.90</price>
+    <year>1985</year>
+  </cd>
+    <cd>
+    <title>Some othertitle </title>
+    <artist>The artist</artist>
+    <country>USA</country>
+    <company>Columbia</company>
+    <price>11.40</price>
+    <year>1985</year>
+  </cd>
+</catalog>

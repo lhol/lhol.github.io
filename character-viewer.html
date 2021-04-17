@@ -1,0 +1,19 @@
+<html>
+<head>
+<script> 
+    xmldoc = new ActiveXObject("Microsoft.XMLDOM"); 
+    xmldoc.async = false; 
+    xmldoc.load("file:///C:/Users/LarsH/OneDrive/Transfer/RPG/Warhammer/Elaine.xml"); 
+    xsldoc = new ActiveXObject("Microsoft.XMLDOM"); 
+    xsldoc.async = false; 
+    xsldoc.load("file:///C:/Users/LarsH/OneDrive/Transfer/RPG/Warhammer/Warhammer2ndCharacter.XSL"); 
+ </script> 
+
+</head>
+<body> 
+    Start Warhammer Character Test
+ <script> 
+    document.write(xmldoc.transformNode(xsldoc)); 
+ </script>
+     End Warhammer Character Test
+ </body>
