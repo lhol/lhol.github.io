@@ -13,11 +13,7 @@
 
 		<xsl:for-each select="//character">
             		<xsl:for-each select="abilities/*">
-                    		<xsl param name="skilltye">
-                    		<with xsl param name="skilltype" select="substring(concat(name,'adv'),1,3)" />
-		                <xsl select="$skilltype" /><br><br/>
-				<xsl:if test="(position() &gt; 1)">, </xsl:if>
-				<xsl:value-of select="name" />
+				<xsl:value-of select="*" />
 		</xsl:for-each>
 			    
             <h2>Skills</h2>
