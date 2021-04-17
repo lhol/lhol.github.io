@@ -9,6 +9,16 @@
   <xsl:template match="/">
        
 		<xsl:for-each select="//character">
+		
+		        <table>
+            		<xsl:for-each select="advancedskills/*">
+                        <tr>
+                            <td><xsl:value-of select="name" /></td>
+                            <td><xsl:value-of select="statname" /></td>
+                            <td><xsl:value-of select="stat" /></td>
+                        </tr>
+			</xsl:for-each>
+            		</table>
 			<xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'" />
 			<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 			<xsl:variable name="strBonus" select="abilities/strength/bonus" />
