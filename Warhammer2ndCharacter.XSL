@@ -9,12 +9,6 @@
   <xsl:template match="/">
 <html>
 	<body>
-		<xsl:for-each select="//character">
-
-		<xsl:for-each select="//character">
-            		<xsl:for-each select="abilities/*">
-				<xsl:value-of select="*" />
-		</xsl:for-each>
 			    
             <h2>Skills</h2>
             <table>
