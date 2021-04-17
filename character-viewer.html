@@ -1,5 +1,89 @@
 <html>
 <head>
+    <title>Fantasy Grounds Warhammer Character Sheet</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <style>
+      body
+      {
+      font-family: Comic Sans MS, Candara;
+      font-size: 12pt;
+         font-weight: bold;
+      }
+      .skill {
+        height: 29px;
+        width: 200px;
+        position: relative;
+        text-overflow: clip;
+      }
+      .skillRoll {
+        height: 29px;
+        width: 50px;
+        position: relative;
+      }		  
+      .skillBonus {
+        font-size: x-small;		  
+      }
+      .edge {
+        height: 25px;
+        width: 190px;
+        position: relative;
+        text-overflow: clip;
+        font-size: x-small;
+        padding: 0px;
+        margin: 0px;
+      }
+      .hindrance {
+        height: 22px;
+        width: 190px;
+        position: relative;
+        text-overflow: clip;
+        font-size: x-small;
+        padding: 0px;
+        margin: 0px;
+      }
+      
+      .derivedStat {
+        font-size: x-large;
+        position: absolute;
+      }
+      table, th, td {
+        border: 0px solid black;
+      }
+      
+      .page {
+        page-break-after: always;
+        position: relative;
+        height: 7.5in;
+      }
+      .pagebg {
+        height: 7.5in;
+      }		  
+      .sheetData {
+        position: absolute;
+        font-size: medium;
+      }
+      .sheetDataBig {
+        position: absolute; 
+        font-size: x-large;
+      }
+      .sheetDataSmall{
+        position: absolute; 
+        font-size: x-small;
+      }		
+      .sheetDataXSmall {
+        position: absolute; 
+        font-size: xx-small;
+      }			  
+      .sheetDataXSmall TR TD {
+        font-size: xx-small;
+      }
+      input[type='checkbox'] {
+        width:8px;
+        height:8px;
+        padding: 0px;
+        margin: 1px;
+    }
+    </style>
 <script>
 function loadXMLDoc(dname) {
     if (window.XMLHttpRequest) {
