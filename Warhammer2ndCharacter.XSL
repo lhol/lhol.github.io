@@ -7,21 +7,45 @@
 />
 
   <xsl:template match="/">
-<html>
-	<body>
-			    
+  <html>
+  <body>
+		<xsl:for-each select="//character">
+            
             <h2>Skills</h2>
             <table>
-            <tr>
-            <td>Skill</td><td>Basisattribut</td><td>Skillroll</td>
-            </tr>
-            <xsl:for-each select="advancedskills/*">
-                        <tr>
-                            <td><xsl:value-of select="name" /></td>
-                            <td><xsl:value-of select="statname" /></td>
-                            <td><xsl:value-of select="stat" /></td>
-                        </tr>
-			</xsl:for-each>
+				<tbody>
+					<tr>
+						<th>Skill</th>
+						<th>Basisattribut</th>
+						<th>Skillroll</th>
+					</tr>
+					<xsl:for-each select="advancedskills/*">
+						<tr>
+							<td>
+								adv: <xsl:value-of select="name" />
+							</td>
+							<td>
+								<xsl:value-of select="statname" />
+							</td>
+							<td>
+								<xsl:value-of select="stat" />
+							</td>
+						</tr>
+					</xsl:for-each>
+					<xsl:for-each select="basicskills/*">
+						<tr>
+							<td>
+								bas: <xsl:value-of select="name" />
+							</td>
+							<td>
+								<xsl:value-of select="statname" />
+							</td>
+							<td>
+								<xsl:value-of select="stat" />
+							</td>
+						</tr>
+					</xsl:for-each>
+				</tbody>
             </table>
             
             <h2>Waffen</h2>
@@ -46,16 +70,8 @@
 			</xsl:for-each>
             </table>
 
-			<xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'" />
-			<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-			<xsl:variable name="strBonus" select="abilities/strength/bonus" />
-			<xsl:variable name="dexBonus" select="abilities/dexterity/bonus" />
-			<xsl:variable name="conBonus" select="abilities/constitution/bonus" />
-			<xsl:variable name="intBonus" select="abilities/intelligence/bonus" />
-			<xsl:variable name="wisBonus" select="abilities/wisdom/bonus" />
-			<xsl:variable name="chaBonus" select="abilities/charisma/bonus" />
-			<xsl:variable name="profBonus" select="profbonus" />		
-			<div id="page1" class="page">
+
+            <div id="page1" class="page">
 				<img class="pagebg" src='http://www.fantasygrounds.com/images/charsheets/DDALRoD_CharacterSheet_Page_1.jpg' style="position: absolute; top: 0; left: 0; height: 7.5in; z-index: -1;" />		
 			
 				<!-- Layout basic info -->
@@ -71,25 +87,7 @@
 				<div class="sheetData" style="top: 65; left: 365;"><xsl:value-of select="exp" /></div>
 				<div class="sheetData" style="top: 65; left: 430;"><xsl:value-of select="dci" /></div>
 
-				<!-- Attributes -->
-				<div class="sheetDataBig" style="top: 136; left: 36;"><xsl:value-of select="abilities/strength/score" /></div>
-				<div class="sheetDataSmall" style="top: 167; left: 44;"><xsl:if test="$strBonus >= 0">+</xsl:if><xsl:value-of select="$strBonus" /></div>
-				
-				<div class="sheetDataBig" style="top: 200; left: 36;"><xsl:value-of select="abilities/dexterity/score" /></div>
-				<div class="sheetDataSmall" style="top: 232; left: 44;"><xsl:if test="$dexBonus >= 0">+</xsl:if><xsl:value-of select="$dexBonus" /></div>
-				
-				<div class="sheetDataBig" style="top: 265; left: 36;"><xsl:value-of select="abilities/constitution/score" /></div>
-				<div class="sheetDataSmall" style="top: 298; left: 44;"><xsl:if test="$conBonus >= 0">+</xsl:if><xsl:value-of select="$conBonus" /></div>
-				
-				<div class="sheetDataBig" style="top: 330; left: 36;"><xsl:value-of select="abilities/intelligence/score" /></div>
-				<div class="sheetDataSmall" style="top: 363; left: 44;"><xsl:if test="$intBonus >= 0">+</xsl:if><xsl:value-of select="$intBonus" /></div>
-				
-				<div class="sheetDataBig" style="top: 395; left: 36;"><xsl:value-of select="abilities/wisdom/score" /></div>
-				<div class="sheetDataSmall" style="top: 428; left: 44;"><xsl:if test="$wisBonus >= 0">+</xsl:if><xsl:value-of select="$wisBonus" /></div>
-				
-				<div class="sheetDataBig" style="top: 460; left: 36;"><xsl:value-of select="abilities/charisma/score" /></div>
-				<div class="sheetDataSmall" style="top: 493; left: 44;"><xsl:if test="$chaBonus >= 0">+</xsl:if><xsl:value-of select="$chaBonus" /></div>
-				
+
 				<!-- Page 1 2nd column -->
 				<!-- Proficiency Bonus -->				
 				<div class="sheetDataSmall" style="top: 153; left: 92;"><xsl:if test="profbonus >= 0">+</xsl:if><xsl:value-of select="profbonus" /></div>
@@ -203,39 +201,7 @@
 				<col width="46%" />
 				<col width="24%" />
 				<col width="30%" />
-				<xsl:for-each select="weaponlist/*">
-					<tr><td><xsl:value-of select="name" /></td>
-					<!-- melee -->					
-					<xsl:if test="type=0">
-						<xsl:if test="prof &gt; 0">
-							<td>+<xsl:value-of select="$strBonus + $profBonus + attackbonus" /></td><td><xsl:value-of select="damagelist/*[1]/dice" />+<xsl:value-of select="$strBonus" /></td>
-						</xsl:if>
-						<xsl:if test="prof &lt; 1">
-							<td>+<xsl:value-of select="$strBonus + attackbonus" /></td><td><xsl:value-of select="damagelist/*[1]/dice" />+<xsl:value-of select="$strBonus" /></td>
-						</xsl:if>
-					</xsl:if>
-
-					<!-- ranged -->
-					<xsl:if test="type=1">
-						<xsl:if test="prof &gt; 0">
-							<td>+<xsl:value-of select="$dexBonus + $profBonus + attackbonus" /></td><td><xsl:value-of select="damagelist/*[1]/dice" /></td>
-						</xsl:if>
-						<xsl:if test="prof &lt; 1">
-							<td>+<xsl:value-of select="$dexBonus + attackbonus" /></td><td><xsl:value-of select="damagelist/*[1]/dice" /></td>
-						</xsl:if>					
-					</xsl:if>
-					
-					<!-- thrown -->
-					<xsl:if test="type=2">
-						<xsl:if test="prof &gt; 0">
-							<td>+<xsl:value-of select="$strBonus + $profBonus + attackbonus" /></td><td><xsl:value-of select="damagelist/*[1]/dice" />+<xsl:value-of select="$strBonus" /></td>
-						</xsl:if>
-						<xsl:if test="prof &lt; 1">
-							<td>+<xsl:value-of select="$strBonus + attackbonus" /></td><td><xsl:value-of select="damagelist/*[1]/dice" />+<xsl:value-of select="$strBonus" /></td>
-						</xsl:if>
-					</xsl:if>
-					</tr>
-				</xsl:for-each>
+				
 				</table>
 				</div>
 				
@@ -283,9 +249,8 @@
 			<!-- End of Character -->
 		</xsl:for-each>
 
-
-	</body>
-		</html>
+</body>
+</html>
   </xsl:template>
   
 	<xsl:template name="checkboxes">
