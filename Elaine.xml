@@ -18,7 +18,7 @@
 			<adv_movement type="number">0</adv_movement>
 			<adv_strength type="number">0</adv_strength>
 			<adv_strengthbonus type="number">0</adv_strengthbonus>
-			<adv_toughness type="number">1</adv_toughness>
+			<adv_toughness type="number">10</adv_toughness>
 			<adv_toughnessbonus type="number">0</adv_toughnessbonus>
 			<adv_weapon type="number">20</adv_weapon>
 			<adv_willpower type="number">10</adv_willpower>
@@ -42,10 +42,10 @@
 			<base_leadership type="number">26</base_leadership>
 			<base_magic type="number">0</base_magic>
 			<base_movement type="number">6</base_movement>
-			<base_strength type="number">3</base_strength>
-			<base_strengthbonus type="number">0</base_strengthbonus>
-			<base_toughness type="number">3</base_toughness>
-			<base_toughnessbonus type="number">0</base_toughnessbonus>
+			<base_strength type="number">30</base_strength>
+			<base_strengthbonus type="number">3</base_strengthbonus>
+			<base_toughness type="number">30</base_toughness>
+			<base_toughnessbonus type="number">4</base_toughnessbonus>
 			<base_weapon type="number">35</base_weapon>
 			<base_willpower type="number">35</base_willpower>
 			<base_wounds type="number">6</base_wounds>
@@ -66,12 +66,12 @@
 			<leadershipbonus type="number">2</leadershipbonus>
 			<magic type="number">0</magic>
 			<movement type="number">6</movement>
-			<strength type="number">3</strength>
-			<strengthbonus type="number">0</strengthbonus>
+			<strength type="number">30</strength>
+			<strengthbonus type="number">3</strengthbonus>
 			<strmult type="number">0</strmult>
 			<tnmult type="number">0</tnmult>
-			<toughness type="number">4</toughness>
-			<toughnessbonus type="number">0</toughnessbonus>
+			<toughness type="number">40</toughness>
+			<toughnessbonus type="number">4</toughnessbonus>
 			<weapon type="number">55</weapon>
 			<willpower type="number">45</willpower>
 			<willpowerbonus type="number">4</willpowerbonus>
@@ -623,6 +623,7 @@
 		<agtaken5 type="number">0</agtaken5>
 		<agtaken6 type="number">0</agtaken6>
 		<agtaken7 type="number">0</agtaken7>
+		<arcanecaster type="number">0</arcanecaster>
 		<armor>
 			<body type="number">1</body>
 			<head type="number">0</head>
@@ -647,7 +648,7 @@
 		<atktaken7 type="number">0</atktaken7>
 		<attk_advtaken type="number">1</attk_advtaken>
 		<attributes>
-			<carrylimit type="number">30</carrylimit>
+			<carrylimit type="number">300</carrylimit>
 			<charge type="number">24</charge>
 			<critwounds type="number">0</critwounds>
 			<fullmove type="number">12</fullmove>
@@ -725,9 +726,9 @@
 				<skillAdv2 type="number">0</skillAdv2>
 				<skillAdv3 type="number">0</skillAdv3>
 				<skillAdv4 type="number">0</skillAdv4>
-				<skillroll type="number">2</skillroll>
+				<skillroll type="number">20</skillroll>
 				<skilltrained type="number">0</skilltrained>
-				<stat type="number">4</stat>
+				<stat type="number">40</stat>
 				<statname type="string">toughness</statname>
 			</id-00004>
 			<id-00005>
@@ -811,9 +812,9 @@
 				<skillAdv2 type="number">0</skillAdv2>
 				<skillAdv3 type="number">0</skillAdv3>
 				<skillAdv4 type="number">0</skillAdv4>
-				<skillroll type="number">1</skillroll>
+				<skillroll type="number">15</skillroll>
 				<skilltrained type="number">0</skilltrained>
-				<stat type="number">3</stat>
+				<stat type="number">30</stat>
 				<statname type="string">strength</statname>
 			</id-00009>
 			<id-00010>
@@ -922,9 +923,9 @@
 				<skillAdv2 type="number">0</skillAdv2>
 				<skillAdv3 type="number">0</skillAdv3>
 				<skillAdv4 type="number">0</skillAdv4>
-				<skillroll type="number">1</skillroll>
+				<skillroll type="number">15</skillroll>
 				<skilltrained type="number">0</skilltrained>
-				<stat type="number">3</stat>
+				<stat type="number">30</stat>
 				<statname type="string">strength</statname>
 			</id-00015>
 			<id-00016>
@@ -998,9 +999,9 @@
 				<skillAdv2 type="number">0</skillAdv2>
 				<skillAdv3 type="number">0</skillAdv3>
 				<skillAdv4 type="number">0</skillAdv4>
-				<skillroll type="number">1</skillroll>
+				<skillroll type="number">15</skillroll>
 				<skilltrained type="number">0</skilltrained>
-				<stat type="number">3</stat>
+				<stat type="number">30</stat>
 				<statname type="string">strength</statname>
 			</id-00019>
 			<id-00020>
@@ -1087,9 +1088,9 @@
 				<skillAdv2 type="number">0</skillAdv2>
 				<skillAdv3 type="number">0</skillAdv3>
 				<skillAdv4 type="number">0</skillAdv4>
-				<skillroll type="number">1</skillroll>
+				<skillroll type="number">15</skillroll>
 				<skilltrained type="number">0</skilltrained>
-				<stat type="number">3</stat>
+				<stat type="number">30</stat>
 				<statname type="string">strength</statname>
 			</id-00024>
 			<id-00025>
@@ -1146,6 +1147,7 @@
 		<bstaken5 type="number">0</bstaken5>
 		<bstaken6 type="number">0</bstaken6>
 		<bstaken7 type="number">0</bstaken7>
+		<castarmorpenalty type="number">0</castarmorpenalty>
 		<cl_advtaken type="number">2</cl_advtaken>
 		<cl_temp type="number">0</cl_temp>
 		<coins>
@@ -1163,6 +1165,7 @@
 		<currentcareer type="string">Agent of the Shroud</currentcareer>
 		<dex_advtaken type="number">2</dex_advtaken>
 		<dex_temp type="number">0</dex_temp>
+		<divinecaster type="number">0</divinecaster>
 		<encumbrance>
 			<load type="number">0</load>
 			<penalty type="number">0</penalty>
@@ -1411,7 +1414,6 @@
 				<carried type="number">2</carried>
 				<class type="string">Melee</class>
 				<ctlink type="number">0</ctlink>
-				<damagebonus type="string">3</damagebonus>
 				<damagedice type="string">1d6</damagedice>
 				<defensive type="number">0</defensive>
 				<experimental type="number">0</experimental>
@@ -1456,7 +1458,7 @@
 				<carried type="number">2</carried>
 				<class type="string">Melee</class>
 				<ctlink type="number">0</ctlink>
-				<damagebonus type="string">1</damagebonus>
+				<damagebonus type="string">-1</damagebonus>
 				<damagedice type="string">1d6</damagedice>
 				<defensive type="number">0</defensive>
 				<experimental type="number">0</experimental>
@@ -1502,7 +1504,7 @@
 				<carried type="number">2</carried>
 				<class type="string">Melee</class>
 				<ctlink type="number">0</ctlink>
-				<damagebonus type="string">1</damagebonus>
+				<damagebonus type="string">-1</damagebonus>
 				<damagedice type="string">1d6</damagedice>
 				<defensive type="number">0</defensive>
 				<experimental type="number">0</experimental>

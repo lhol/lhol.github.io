@@ -1,29 +1,94 @@
 <html>
 <head>
     <title>Fantasy Grounds Warhammer Character Sheet</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
-    <style>
-      body
-      {
-      font-family: Comic Sans MS, Candara;
-      font-size: 12pt;
-         font-weight: bold;
-      }
-      .skill {
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <div hidden>
+        <xml id="cat1">
+            <?xml version="1.0" encoding="ISO-8859-1" ?>
+            <catalog>
+                <cd>
+                    <title>Empire Burlesque</title>
+                    <artist>Bob Di.</artist>
+                    <country>USA</country>
+                    <company>Columbia</company>
+                    <price>10.90</price>
+                    <year>1985</year>
+                </cd>
+            </catalog>
+        </xml>
+        <xml id="cat2">
+            <?xml version="1.0" encoding="ISO-8859-1" ?>
+            <catalog>
+                <cd>
+                    <title>Some title </title>
+                    <artist>Some artist</artist>
+                    <country>USA</country>
+                    <company>Columbia</company>
+                    <price>10.90</price>
+                    <year>1985</year>
+                </cd>
+                <cd>
+                    <title>Some othertitle </title>
+                    <artist>The artist</artist>
+                    <country>USA</country>
+                    <company>Columbia</company>
+                    <price>11.40</price>
+                    <year>1985</year>
+                </cd>
+            </catalog>
+        </xml>
+        <xml id="cdcatalog">
+            <?xml version="1.0" encoding="ISO-8859-1" ?>
+            <xsl:stylesheet version="1.0"
+                            xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+                <xsl:template match="/">
+                    <html>
+                    <body>
+                        <h2>My CD Collection</h2>
+                        <table border="1">
+                            <tr bgcolor="#9acd32">
+                                <th align="left">Title</th>
+                                <th align="left">Artist</th>
+                            </tr>
+                            <xsl:for-each select="catalog/cd">
+                                <tr>
+                                    <td><xsl:value-of select="title" /></td>
+                                    <td><xsl:value-of select="artist" /></td>
+                                </tr>
+                            </xsl:for-each>
+                        </table>
+                    </body>
+                </html>
+            </xsl:template>
+        </xsl:stylesheet>
+    </xml>
+    </div>
+<style>
+    body {
+        font-family: Comic Sans MS, Candara;
+        font-size: 12pt;
+        font-weight: bold;
+    }
+
+    .skill {
         height: 29px;
         width: 200px;
         position: relative;
         text-overflow: clip;
-      }
-      .skillRoll {
+    }
+
+    .skillRoll {
         height: 29px;
         width: 50px;
         position: relative;
-      }		  
-      .skillBonus {
-        font-size: x-small;		  
-      }
-      .edge {
+    }
+
+    .skillBonus {
+        font-size: x-small;
+    }
+
+    .edge {
         height: 25px;
         width: 190px;
         position: relative;
@@ -31,8 +96,9 @@
         font-size: x-small;
         padding: 0px;
         margin: 0px;
-      }
-      .hindrance {
+    }
+
+    .hindrance {
         height: 22px;
         width: 190px;
         position: relative;
@@ -40,156 +106,1894 @@
         font-size: x-small;
         padding: 0px;
         margin: 0px;
-      }
-      
-      .derivedStat {
+    }
+
+    .derivedStat {
         font-size: x-large;
         position: absolute;
-      }
-      table, th, td {
-        border: 0px solid black;
-      }
-      
-      .page {
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    .page {
         page-break-after: always;
         position: relative;
         height: 7.5in;
-      }
-        
-      .mydiv {
-        page-break-after: always;
-        position: relative;
+    }
+
+    .pagebg {
         height: 7.5in;
-      }        
-      .pagebg {
-        height: 7.5in;
-      }		  
-      .sheetData {
+    }
+
+    .sheetData {
         position: absolute;
         font-size: medium;
-      }
-      .sheetDataBig {
-        position: absolute; 
+    }
+
+    .sheetDataBig {
+        position: absolute;
         font-size: x-large;
-      }
-      .sheetDataSmall{
-        position: absolute; 
+    }
+
+    .sheetDataSmall {
+        position: absolute;
         font-size: x-small;
-      }		
-      .sheetDataXSmall {
-        position: absolute; 
+    }
+
+    .sheetDataXSmall {
+        position: absolute;
         font-size: xx-small;
-      }			  
-      .sheetDataXSmall TR TD {
-        font-size: xx-small;
-      }
-      input[type='checkbox'] {
-        width:8px;
-        height:8px;
+    }
+
+        .sheetDataXSmall TR TD {
+            font-size: xx-small;
+        }
+
+    input[type='checkbox'] {
+        width: 8px;
+        height: 8px;
         padding: 0px;
         margin: 1px;
     }
-    </style>
+</style>
 <script>
-function loadXMLDoc(dname) {
-    if (window.XMLHttpRequest) {
-        xhttp = new XMLHttpRequest();
-    } else {
-        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    function loadXMLDoc(dname) {
+        if (window.XMLHttpRequest) {
+            xhttp = new XMLHttpRequest();
+        } else {
+            xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xhttp.open("GET", dname, false);
+        xhttp.send("");
+        return xhttp.responseXML;
     }
-    xhttp.open("GET", dname, false);
-    xhttp.send("");
-    return xhttp.responseXML;
-}
 
-function displayResult(source,styledoc) {
-    xml = loadXMLDoc(source);
-    xsl = loadXMLDoc(styledoc);
-    //set a &nbsp to make prevent FF to append the text by double click
-    document.getElementById("mydiv").innerHTML = "&nbsp;";
-    // code for IE
-    if (window.ActiveXObject) {
-        ex = xml.transformNode(xsl);
-        document.getElementById("mydiv").innerHTML = ex;
+    function displayResult(source, styledoc) {
+
+        if (source.endsWith(".xml")) {
+            xml = loadXMLDoc(source);
+        } else {
+            xml = getDomFromId(source);
+        }
+        if (styledoc.endsWith(".xsl")) {
+            xsl = loadXMLDoc(styledoc);
+        } else {
+            xsl = getDomFromId(styledoc);
+        }
+
+        //set a &nbsp to make prevent FF to append the text by double click
+        document.getElementById("mydiv").innerHTML = "&nbsp;";
+        // code for IE
+        if (window.ActiveXObject) {
+            ex = xml.transformNode(xsl);
+            document.getElementById("mydiv").innerHTML = ex;
+        }
+        // code for Mozilla, Firefox, Opera, etc.
+        else if (document.implementation && document.implementation.createDocument) {
+            xsltProcessor = new XSLTProcessor();
+            xsltProcessor.importStylesheet(xsl);
+            resultDocument = xsltProcessor.transformToFragment(xml, document);
+            document.getElementById("mydiv").appendChild(resultDocument);
+        }
     }
-    // code for Mozilla, Firefox, Opera, etc.
-    else if (document.implementation && document.implementation.createDocument) {
-        xsltProcessor = new XSLTProcessor();
-        xsltProcessor.importStylesheet(xsl);
-        resultDocument = xsltProcessor.transformToFragment(xml, document);
-        document.getElementById("mydiv").appendChild(resultDocument);
+    function getDomFromId(id) {
+        xmltext = document.getElementById(id).innerHTML;
+        // Create a DOMParser
+        var parser = new DOMParser();
+        // Use it to turn your xmlString into an XMLDocument
+        var xmlDoc = parser.parseFromString(xmltext, "application/xml");
+        alert(xmlDoc);
+        document.getElementById("debug").innerHTML = xmlDoc.firstChild;
+        return xmlDoc;
     }
-}
 </script>
 </head>
-<body> 
-<a onclick="displayResult('Elaine.xml','Warhammer2ndCharacter.XSL')" href="javascript:void(0);">catalog 1</a> 
-<a onclick="displayResult('cdcatalog2.xml','cdcatalog.xsl')" href="javascript:void(0);">catalog 2</a> 
-<div id="mydiv">
-</div>
+<body>
+    <a onclick="displayResult('Elaine.xml','Warhammer2ndCharacter.xsl')" href="javascript:void(0);">Elaine remote / </a>
+    <a onclick="displayResult('cdcatalog2.xml','cdcatalog.xsl')" href="javascript:void(0);">catalog 2 remote /</a>
+    <a onclick="displayResult('elaine','Warhammer2ndCharacter.xsl')" href="javascript:void(0);">Elaine local /</a>
+    <a onclick="displayResult('cat1','cdcatalog.xsl')" href="javascript:void(0);">catalog 2 local /</a>
+    <a onclick="displayResult('elaine','Warhammer2ndCharacter')" href="javascript:void(0);">Elaine+xsl local/</a>
+    <a onclick="displayResult('cat1','cdcatalog')" href="javascript:void(0);">catalog 2+xsl local</a>
+    <div id="mydiv">
+    </div>
+    <textarea id="debug">
+        
+    </textarea>
+    <!--<textarea id="cat1" rows="20" cols="40" style="border:none;">-->
+    <div hidden>
+        <xml id="cat3">
+            <?xml version="1.0" encoding="ISO-8859-1" ?>
+            <catalog>
+                <cd>
+                    <title>Empire Burlesque</title>
+                    <artist>Bob Dylan</artist>
+                    <country>USA</country>
+                    <country>Columbia</country>
+                    <price>10.90</price>
+                    <year>1985</year>
+                </cd>
+            </catalog>
+        </xml>
+        <!--
+    </textarea>-->
+        <xml id="elaine">
+            <?xml version="1.0" encoding="utf-8" ?>
+            <root version="4" dataversion="20201016" release="4.1|CoreRPG:4.1">
+                <character>
+                    <abilities>
+                        <adv_agility type="number">20</adv_agility>
+                        <adv_attack type="number">1</adv_attack>
+                        <adv_ballistic type="number">0</adv_ballistic>
+                        <adv_coolness type="number">10</adv_coolness>
+                        <adv_dexterity type="number">20</adv_dexterity>
+                        <adv_fate type="number">1</adv_fate>
+                        <adv_fellowship type="number">0</adv_fellowship>
+                        <adv_fortune type="number">1</adv_fortune>
+                        <adv_initiative type="number">10</adv_initiative>
+                        <adv_insanity type="number">0</adv_insanity>
+                        <adv_intelligence type="number">0</adv_intelligence>
+                        <adv_leadership type="number">0</adv_leadership>
+                        <adv_magic type="number">0</adv_magic>
+                        <adv_movement type="number">0</adv_movement>
+                        <adv_strength type="number">0</adv_strength>
+                        <adv_strengthbonus type="number">0</adv_strengthbonus>
+                        <adv_toughness type="number">10</adv_toughness>
+                        <adv_toughnessbonus type="number">0</adv_toughnessbonus>
+                        <adv_weapon type="number">20</adv_weapon>
+                        <adv_willpower type="number">10</adv_willpower>
+                        <adv_wounds type="number">2</adv_wounds>
+                        <agility type="number">58</agility>
+                        <agilitybonus type="number">5</agilitybonus>
+                        <ammo type="number">1</ammo>
+                        <attack type="number">2</attack>
+                        <ballistic type="number">30</ballistic>
+                        <base_agility type="number">38</base_agility>
+                        <base_attack type="number">1</base_attack>
+                        <base_ballistic type="number">30</base_ballistic>
+                        <base_coolness type="number">32</base_coolness>
+                        <base_dexterity type="number">38</base_dexterity>
+                        <base_fate type="number">2</base_fate>
+                        <base_fellowship type="number">28</base_fellowship>
+                        <base_fortune type="number">2</base_fortune>
+                        <base_initiative type="number">38</base_initiative>
+                        <base_insanity type="number">0</base_insanity>
+                        <base_intelligence type="number">30</base_intelligence>
+                        <base_leadership type="number">26</base_leadership>
+                        <base_magic type="number">0</base_magic>
+                        <base_movement type="number">6</base_movement>
+                        <base_strength type="number">30</base_strength>
+                        <base_strengthbonus type="number">3</base_strengthbonus>
+                        <base_toughness type="number">30</base_toughness>
+                        <base_toughnessbonus type="number">4</base_toughnessbonus>
+                        <base_weapon type="number">35</base_weapon>
+                        <base_willpower type="number">35</base_willpower>
+                        <base_wounds type="number">6</base_wounds>
+                        <coolness type="number">42</coolness>
+                        <coolnessbonus type="number">4</coolnessbonus>
+                        <dexterity type="number">58</dexterity>
+                        <dexteritybonus type="number">5</dexteritybonus>
+                        <fate type="number">3</fate>
+                        <fellowship type="number">28</fellowship>
+                        <fellowshipbonus type="number">2</fellowshipbonus>
+                        <fortune type="number">3</fortune>
+                        <initiative type="number">48</initiative>
+                        <initiativebonus type="number">4</initiativebonus>
+                        <insanity type="number">0</insanity>
+                        <intelligence type="number">30</intelligence>
+                        <intelligencebonus type="number">3</intelligencebonus>
+                        <leadership type="number">26</leadership>
+                        <leadershipbonus type="number">2</leadershipbonus>
+                        <magic type="number">0</magic>
+                        <movement type="number">6</movement>
+                        <strength type="number">30</strength>
+                        <strengthbonus type="number">3</strengthbonus>
+                        <strmult type="number">0</strmult>
+                        <tnmult type="number">0</tnmult>
+                        <toughness type="number">40</toughness>
+                        <toughnessbonus type="number">4</toughnessbonus>
+                        <weapon type="number">55</weapon>
+                        <willpower type="number">45</willpower>
+                        <willpowerbonus type="number">4</willpowerbonus>
+                        <wounds type="number">8</wounds>
+                    </abilities>
+                    <advancedskills>
+                        <id-00001>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Theology)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">30</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00001>
+                        <id-00002>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(bel. Wiss.Fäh.)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00002>
+                        <id-00003>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Charm)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">28</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">28</stat>
+                            <statname type="string">fellowship</statname>
+                        </id-00003>
+                        <id-00004>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Com. Kn. Tilea)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">30</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00004>
+                        <id-00005>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Com Kn. Bretonnia)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">30</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00005>
+                        <id-00006>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Disguise)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">30</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00006>
+                        <id-00007>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Sp Wp Crossbow</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">55</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">55</stat>
+                            <statname type="string">weapon</statname>
+                        </id-00007>
+                        <id-00008>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Bribery, Mimic or Seduction)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00008>
+                        <id-00009>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Cure Disease)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">30</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00009>
+                        <id-00020>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Mighty Shot)-</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00020>
+                        <id-00021>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Rapid Reload)-</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00021>
+                        <id-00022>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Tunnel Rat)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00022>
+                        <id-00023>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Com. Kn. The Empire)-</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">30</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00023>
+                        <id-00028>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Disarm</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">55</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">55</stat>
+                            <statname type="string">weapon</statname>
+                        </id-00028>
+                        <id-00029>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Dodge Blow)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">48</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">48</stat>
+                            <statname type="string">initiative</statname>
+                        </id-00029>
+                        <id-00030>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(History)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">30</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00030>
+                        <id-00031>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Pick Lock)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">58</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00031>
+                        <id-00032>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Read/Write)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00032>
+                        <id-00033>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Shadowing)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">48</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">48</stat>
+                            <statname type="string">initiative</statname>
+                        </id-00033>
+                        <id-00034>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Strike Mighty Blow</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00034>
+                        <id-00035>
+                            <advanced type="number">0</advanced>
+                            <name type="string">(Strike to Injure)</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00035>
+                        <id-00036>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Blather</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">28</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">28</stat>
+                            <statname type="string">fellowship</statname>
+                        </id-00036>
+                        <id-00037>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Fleet Footed M+1</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00037>
+                        <id-00038>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Identify Undead</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">30</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00038>
+                        <id-00039>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Nigth Vision</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00039>
+                        <id-00040>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Scale Sheer Surface</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">68</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00040>
+                        <id-00041>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Se Si Thieves</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00041>
+                        <id-00042>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Se La Classical</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">40</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00042>
+                        <id-00043>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Se La Thieves Tongue</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">0</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">0</stat>
+                        </id-00043>
+                        <id-00044>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Sixth Sense</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">40</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00044>
+                        <id-00045>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Sp Wp Whip</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">55</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">55</stat>
+                            <statname type="string">weapon</statname>
+                        </id-00045>
+                        <id-00046>
+                            <advanced type="number">0</advanced>
+                            <name type="string">Spot Trap</name>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">40</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00046>
+                    </advancedskills>
+                    <ag_advtaken type="number">2</ag_advtaken>
+                    <ag_temp type="number">0</ag_temp>
+                    <age type="string">22</age>
+                    <agprevious type="number">10</agprevious>
+                    <agscheme type="number">20</agscheme>
+                    <agtaken type="number">1</agtaken>
+                    <agtaken2 type="number">0</agtaken2>
+                    <agtaken3 type="number">0</agtaken3>
+                    <agtaken4 type="number">0</agtaken4>
+                    <agtaken5 type="number">0</agtaken5>
+                    <agtaken6 type="number">0</agtaken6>
+                    <agtaken7 type="number">0</agtaken7>
+                    <arcanecaster type="number">0</arcanecaster>
+
+                    <armor>
+                        <body type="number">
+                            1
+                        </body>
+                        <head type="number">
+                            0
+                        </head>
+                        <la type="number">1</la>
+                        <ll type="number">0</ll>
+                        <penalty>
+                            <agility type="number">0</agility>
+                            <move type="number">0</move>
+                        </penalty>
+                        <ra type="number">1</ra>
+                        <rl type="number">0</rl>
+                    </armor>
+                    <atk_temp type="number">0</atk_temp>
+                    <atkprevious type="number">0</atkprevious>
+                    <atkscheme type="number">1</atkscheme>
+                    <atktaken type="number">0</atktaken>
+                    <atktaken2 type="number">0</atktaken2>
+                    <atktaken3 type="number">0</atktaken3>
+                    <atktaken4 type="number">0</atktaken4>
+                    <atktaken5 type="number">0</atktaken5>
+                    <atktaken6 type="number">0</atktaken6>
+                    <atktaken7 type="number">0</atktaken7>
+                    <attk_advtaken type="number">1</attk_advtaken>
+                    <attributes>
+                        <carrylimit type="number">300</carrylimit>
+                        <charge type="number">24</charge>
+                        <critwounds type="number">0</critwounds>
+                        <fullmove type="number">12</fullmove>
+                        <run type="number">36</run>
+                    </attributes>
+                    <basicskills>
+                        <id-00001>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Intelligence</attribute>
+                            <name type="string">Animal Care</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">15</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00001>
+                        <id-00002>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Fellowship</attribute>
+                            <name type="string">Charm</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">14</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">28</stat>
+                            <statname type="string">fellowship</statname>
+                        </id-00002>
+                        <id-00003>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Fellowship</attribute>
+                            <name type="string">Command</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">14</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">28</stat>
+                            <statname type="string">fellowship</statname>
+                        </id-00003>
+                        <id-00004>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Toughness</attribute>
+                            <name type="string">Consume Alcohol</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">20</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">40</stat>
+                            <statname type="string">toughness</statname>
+                        </id-00004>
+                        <id-00005>
+                            <name type="string">Concealment Rural</name>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">68</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00005>
+                        <id-00006>
+                            <name type="string">Concealment Urban</name>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">68</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00006>
+                        <id-00007>
+                            <name type="string">Dance</name>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">14</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">28</stat>
+                            <statname type="string">fellowship</statname>
+                        </id-00007>
+                        <id-00008>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Fellowship</attribute>
+                            <name type="string">Disguise</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">14</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">28</stat>
+                            <statname type="string">fellowship</statname>
+                        </id-00008>
+                        <id-00009>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Strength</attribute>
+                            <name type="string">Drive</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">15</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">strength</statname>
+                        </id-00009>
+                        <id-00010>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Intelligence</attribute>
+                            <name type="string">Evaluate</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">40</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00010>
+                        <id-00011>
+                            <name type="string">Follow Trail</name>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">40</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00011>
+                        <id-00012>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Intelligence</attribute>
+                            <name type="string">Gamble</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">15</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00012>
+                        <id-00013>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Fellowship</attribute>
+                            <name type="string">Gossip</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">14</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">28</stat>
+                            <statname type="string">fellowship</statname>
+                        </id-00013>
+                        <id-00014>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Fellowship</attribute>
+                            <name type="string">Haggle</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">14</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">28</stat>
+                            <statname type="string">fellowship</statname>
+                        </id-00014>
+                        <id-00015>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Strength</attribute>
+                            <name type="string">Intimidate</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">15</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">strength</statname>
+                        </id-00015>
+                        <id-00016>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Intelligence</attribute>
+                            <name type="string">Outdoor Survival</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">15</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00016>
+                        <id-00017>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Intelligence</attribute>
+                            <name type="string">Perception</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">15</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00017>
+                        <id-00018>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Agility</attribute>
+                            <name type="string">Ride</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">68</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00018>
+                        <id-00019>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Strength</attribute>
+                            <name type="string">Row</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">15</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">strength</statname>
+                        </id-00019>
+                        <id-00020>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Strength</attribute>
+                            <name type="string">Scale Sheer Surface</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">68</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00020>
+                        <id-00021>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Intelligence</attribute>
+                            <name type="string">Search</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">15</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">intelligence</statname>
+                        </id-00021>
+                        <id-00022>
+                            <name type="string">Silent Move Urban</name>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">68</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00022>
+                        <id-00023>
+                            <name type="string">Silent Move Rural</name>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">68</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00023>
+                        <id-00024>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Strength</attribute>
+                            <name type="string">Swim</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">0</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">15</skillroll>
+                            <skilltrained type="number">0</skilltrained>
+                            <stat type="number">30</stat>
+                            <statname type="string">strength</statname>
+                        </id-00024>
+                        <id-00025>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Agility</attribute>
+                            <name type="string">Silent Move</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">68</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00025>
+                        <id-00026>
+                            <ability type="string">Basic</ability>
+                            <attribute type="string">Agility</attribute>
+                            <name type="string">Concealment</name>
+                            <reaction type="string">No</reaction>
+                            <shortcut type="windowreference">
+                                <class>referenceskills</class>
+                                <recordname />
+
+                            </shortcut>
+                            <skill_temp type="number">0</skill_temp>
+                            <skillAdv1 type="number">1</skillAdv1>
+                            <skillAdv2 type="number">0</skillAdv2>
+                            <skillAdv3 type="number">0</skillAdv3>
+                            <skillAdv4 type="number">0</skillAdv4>
+                            <skillroll type="number">68</skillroll>
+                            <skilltrained type="number">1</skilltrained>
+                            <stat type="number">58</stat>
+                            <statname type="string">agility</statname>
+                        </id-00026>
+                    </basicskills>
+                    <bd1 type="number">56</bd1>
+                    <bd2 type="number">80</bd2>
+                    <birthplace type="string">Aquitaine, Bretonnia</birthplace>
+                    <bodyarmor type="string">Leather Jacket</bodyarmor>
+                    <bs_advtaken type="number">2</bs_advtaken>
+                    <bs_temp type="number">0</bs_temp>
+                    <bsprevious type="number">0</bsprevious>
+                    <bsscheme type="number">20</bsscheme>
+                    <bstaken type="number">0</bstaken>
+                    <bstaken2 type="number">0</bstaken2>
+                    <bstaken3 type="number">0</bstaken3>
+                    <bstaken4 type="number">0</bstaken4>
+                    <bstaken5 type="number">0</bstaken5>
+                    <bstaken6 type="number">0</bstaken6>
+                    <bstaken7 type="number">0</bstaken7>
+                    <castarmorpenalty type="number">0</castarmorpenalty>
+                    <cl_advtaken type="number">2</cl_advtaken>
+                    <cl_temp type="number">0</cl_temp>
+                    <coins>
+                        <slot1>
+                            <amount type="number">300</amount>
+                            <name type="string">GC</name>
+                        </slot1>
+                        <slot2>
+                            <amount type="number">0</amount>
+                        </slot2>
+                        <slot3>
+                            <amount type="number">0</amount>
+                        </slot3>
+                    </coins>
+                    <currentcareer type="string">Agent of the Shroud</currentcareer>
+                    <dex_advtaken type="number">2</dex_advtaken>
+                    <dex_temp type="number">0</dex_temp>
+                    <divinecaster type="number">0</divinecaster>
+                    <encumbrance>
+                        <load type="number">0</load>
+                        <penalty type="number">0</penalty>
+                    </encumbrance>
+                    <eyecolor type="string">pale green</eyecolor>
+                    <fate_temp type="number">0</fate_temp>
+                    <fel_advtaken type="number">1</fel_advtaken>
+                    <fel_temp type="number">0</fel_temp>
+                    <felprevious type="number">0</felprevious>
+                    <felscheme type="number">10</felscheme>
+                    <feltaken type="number">0</feltaken>
+                    <feltaken2 type="number">0</feltaken2>
+                    <feltaken3 type="number">0</feltaken3>
+                    <feltaken4 type="number">0</feltaken4>
+                    <feltaken5 type="number">0</feltaken5>
+                    <feltaken6 type="number">0</feltaken6>
+                    <feltaken7 type="number">0</feltaken7>
+                    <fortune_temp type="number">0</fortune_temp>
+                    <!--
+                <gear />
+                -->
+                    <gender type="string">female</gender>
+                    <haircolor type="string">Sienna</haircolor>
+                    <handedness type="string">left</handedness>
+                    <hd1 type="number">1</hd1>
+                    <hd2 type="number">15</hd2>
+                    <height type="string">5'8" 1,73</height>
+                    <ini_advtaken type="number">3</ini_advtaken>
+                    <ini_temp type="number">0</ini_temp>
+                    <init_misc type="number">0</init_misc>
+                    <init_temp type="number">0</init_temp>
+                    <init_total type="number">58</init_total>
+                    <insanity_temp type="number">0</insanity_temp>
+                    <int_advtaken type="number">2</int_advtaken>
+                    <int_temp type="number">0</int_temp>
+                    <intprevious type="number">0</intprevious>
+                    <intscheme type="number">20</intscheme>
+                    <inttaken type="number">0</inttaken>
+                    <inttaken2 type="number">0</inttaken2>
+                    <inttaken3 type="number">0</inttaken3>
+                    <inttaken4 type="number">0</inttaken4>
+                    <inttaken5 type="number">0</inttaken5>
+                    <inttaken6 type="number">0</inttaken6>
+                    <inttaken7 type="number">0</inttaken7>
+                    <inventorylist>
+                        <id-00001>
+                            <carried type="number">1</carried>
+                            <count type="number">1</count>
+                            <encumbrance type="number">0</encumbrance>
+                            <name type="string">Crowbar</name>
+                            <shortcut type="windowreference">
+                                <class>item</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00001>
+                        <id-00002>
+                            <carried type="number">1</carried>
+                            <count type="number">1</count>
+                            <encumbrance type="number">0</encumbrance>
+                            <name type="string">Lantern</name>
+                            <shortcut type="windowreference">
+                                <class>item</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00002>
+                        <id-00003>
+                            <carried type="number">1</carried>
+                            <count type="number">1</count>
+                            <encumbrance type="number">0</encumbrance>
+                            <name type="string">Rope 10 yds</name>
+                            <shortcut type="windowreference">
+                                <class>item</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00003>
+                        <id-00004>
+                            <carried type="number">1</carried>
+                            <count type="number">4</count>
+                            <encumbrance type="number">0</encumbrance>
+                            <name type="string">Sack</name>
+                            <shortcut type="windowreference">
+                                <class>item</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00004>
+                        <id-00005>
+                            <carried type="number">1</carried>
+                            <count type="number">1</count>
+                            <encumbrance type="number">0</encumbrance>
+                            <name type="string">SAP</name>
+                            <shortcut type="windowreference">
+                                <class>item</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00005>
+                        <id-00006>
+                            <carried type="number">2</carried>
+                            <count type="number">1</count>
+                            <encumbrance type="number">0</encumbrance>
+                            <name type="string">Leather Jacket</name>
+                            <shortcut type="windowreference">
+                                <class>item</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00006>
+                        <id-00007>
+                            <carried type="number">1</carried>
+                            <count type="number">1</count>
+                            <encumbrance type="number">0</encumbrance>
+                            <location type="string">Finger</location>
+                            <name type="string">Siegelring gegen Untote(+10 Widerstand bei Untoten)</name>
+                            <shortcut type="windowreference">
+                                <class>item</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00007>
+                        <id-00008>
+                            <carried type="number">1</carried>
+                            <count type="number">1</count>
+                            <encumbrance type="number">0</encumbrance>
+                            <name type="string">Fünfzackiger Schlüssel</name>
+                            <shortcut type="windowreference">
+                                <class>item</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00008>
+                    </inventorylist>
+                    <la1 type="number">36</la1>
+                    <la2 type="number">55</la2>
+                    <languagelist>
+                        <id-00001>
+                            <name type="string">Old Worlder (Reikspiel)</name>
+                            <shortcut type="windowreference">
+                                <class>referencegeneric</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00001>
+                        <id-00002>
+                            <name type="string">(Speak Lang - any two)</name>
+                            <shortcut type="windowreference">
+                                <class>referencegeneric</class>
+                                <recordname />
+
+                            </shortcut>
+                        </id-00002>
+                    </languagelist>
+                    <ld_advtaken type="number">0</ld_advtaken>
+                    <ld_temp type="number">0</ld_temp>
+                    <leftarmarmor type="string">Leather Jacket</leftarmarmor>
+                    <leftlegarmor type="string">Leather Trousers</leftlegarmor>
+                    <ll1 type="number">91</ll1>
+                    <ll2 type="number">100</ll2>
+                    <lucktalentcheck type="number">0</lucktalentcheck>
+                    <mag_advtaken type="number">0</mag_advtaken>
+                    <magic_temp type="number">0</magic_temp>
+                    <magprevious type="number">0</magprevious>
+                    <magscheme type="number">0</magscheme>
+                    <magtaken type="number">0</magtaken>
+                    <magtaken2 type="number">0</magtaken2>
+                    <magtaken3 type="number">0</magtaken3>
+                    <magtaken4 type="number">0</magtaken4>
+                    <magtaken5 type="number">0</magtaken5>
+                    <magtaken6 type="number">0</magtaken6>
+                    <magtaken7 type="number">0</magtaken7>
+                    <maxfatepoints type="number">3</maxfatepoints>
+                    <maxfatepointsvalue type="number">3</maxfatepointsvalue>
+                    <maxfortunepoints type="number">3</maxfortunepoints>
+                    <maxfortunepointsvalue type="number">3</maxfortunepointsvalue>
+                    <maxwoundvalue type="number">0</maxwoundvalue>
+                    <!--
+                <mentaldisorders />
+                    -->
+                    <miscstrb type="number">0</miscstrb>
+                    <misctnb type="number">0</misctnb>
+                    <move_temp type="number">0</move_temp>
+                    <mv_advtaken type="number">0</mv_advtaken>
+                    <mvprevious type="number">0</mvprevious>
+                    <mvscheme type="number">0</mvscheme>
+                    <mvtaken type="number">0</mvtaken>
+                    <mvtaken2 type="number">0</mvtaken2>
+                    <mvtaken3 type="number">0</mvtaken3>
+                    <mvtaken4 type="number">0</mvtaken4>
+                    <mvtaken5 type="number">0</mvtaken5>
+                    <mvtaken6 type="number">0</mvtaken6>
+                    <mvtaken7 type="number">0</mvtaken7>
+                    <name type="string">Elaine Lonnet</name>
+                    <numberofsiblings type="string">0</numberofsiblings>
+                    <otherabilities type="string">Tomb Robber 2e Skills: Common Knowledge (The Empire), Outdoor Survival, Perception, Search, Sp Lan (Classical, Khazalid or Eltharin), Luck, Trapfinder, Tunnel Rat\nVampire Hunter 2e Skills: Ac Kn (History, Necromancy), Com Kn (The Empire), Perception, Search, Mighty Shot, Rapid Reload, Stout-Hearted, Tunnel Rat</otherabilities>
+                    <playerrefnotes type="string">Friends\nHarlan (Markus) Hu\nUrgrimm (Daniel) Dw\nSkottoff Lafortchar (Tiff) Dw\nObrom (Arne) Dw\nPortia (Nicole) Ha\nFlora Ensik (Sassi) Hu\n</playerrefnotes>
+                    <previouscareers type="string">Tomb Robber, Vampire Hunter</previouscareers>
+                    <ra1 type="number">16</ra1>
+                    <ra2 type="number">35</ra2>
+                    <race type="string">Human</race>
+                    <rightarmarmor type="string">Leather Jacket</rightarmarmor>
+                    <rightlegarmor type="string">Leather Trousers</rightlegarmor>
+                    <rl1 type="number">81</rl1>
+                    <rl2 type="number">90</rl2>
+                    <skillfilter type="number">1</skillfilter>
+                    <spell />
+
+                    <str_advtaken type="number">1</str_advtaken>
+                    <str_temp type="number">0</str_temp>
+                    <strb_temp type="number">0</strb_temp>
+                    <strprevious type="number">0</strprevious>
+                    <strscheme type="number">1</strscheme>
+                    <strtaken type="number">0</strtaken>
+                    <strtaken2 type="number">0</strtaken2>
+                    <strtaken3 type="number">0</strtaken3>
+                    <strtaken4 type="number">0</strtaken4>
+                    <strtaken5 type="number">0</strtaken5>
+                    <strtaken6 type="number">0</strtaken6>
+                    <strtaken7 type="number">0</strtaken7>
+                    <talenteffects />
+
+                    <talents />
+
+                    <tn_advtaken type="number">2</tn_advtaken>
+                    <tn_temp type="number">0</tn_temp>
+                    <tnb_temp type="number">0</tnb_temp>
+                    <tnprevious type="number">0</tnprevious>
+                    <tnscheme type="number">2</tnscheme>
+                    <tntaken type="number">0</tntaken>
+                    <tntaken2 type="number">0</tntaken2>
+                    <tntaken3 type="number">0</tntaken3>
+                    <tntaken4 type="number">0</tntaken4>
+                    <tntaken5 type="number">0</tntaken5>
+                    <tntaken6 type="number">0</tntaken6>
+                    <tntaken7 type="number">0</tntaken7>
+                    <token type="token">portrait_id-00008_token</token>
+                    <totalwounds type="number">8</totalwounds>
+                    <totalxpamount type="number">1500</totalxpamount>
+                    <wdsprevious type="number">2</wdsprevious>
+                    <wdsscheme type="number">4</wdsscheme>
+                    <wdstaken type="number">1</wdstaken>
+                    <wdstaken2 type="number">1</wdstaken2>
+                    <wdstaken3 type="number">0</wdstaken3>
+                    <wdstaken4 type="number">0</wdstaken4>
+                    <wdstaken5 type="number">0</wdstaken5>
+                    <wdstaken6 type="number">0</wdstaken6>
+                    <wdstaken7 type="number">0</wdstaken7>
+                    <weaponlist>
+                        <id-00001>
+                            <ammo type="number">0</ammo>
+                            <ap type="string">0</ap>
+                            <armorpiercing type="number">0</armorpiercing>
+                            <attack>
+                                <ballistic type="number">30</ballistic>
+                                <weapon type="number">55</weapon>
+                            </attack>
+                            <attack_meleetemp type="number">0</attack_meleetemp>
+                            <attack_rangedtemp type="number">0</attack_rangedtemp>
+                            <balanced type="number">0</balanced>
+                            <bestcheck type="number">0</bestcheck>
+                            <carried type="number">2</carried>
+                            <class type="string">Melee</class>
+                            <ctlink type="number">0</ctlink>
+                            <damagedice type="string">1d6</damagedice>
+                            <defensive type="number">0</defensive>
+                            <experimental type="number">0</experimental>
+                            <fast type="number">1</fast>
+                            <goodcheck type="number">1</goodcheck>
+                            <impact type="number">0</impact>
+                            <location type="string">NA</location>
+                            <mightyblow type="number">1</mightyblow>
+                            <mightyshot type="number">0</mightyshot>
+                            <name type="string">Longsword</name>
+                            <offhand type="number">0</offhand>
+                            <parry_temp type="number">0</parry_temp>
+                            <parryroll type="number">55</parryroll>
+                            <poorcheck type="number">0</poorcheck>
+                            <precise type="number">0</precise>
+                            <pummeling type="number">0</pummeling>
+                            <rangedsb type="number">0</rangedsb>
+                            <shortcut type="windowreference">
+                                <class>item</class>
+                                <recordname />
+
+                            </shortcut>
+                            <shrapnel type="number">0</shrapnel>
+                            <slow type="number">0</slow>
+                            <snare type="number">0</snare>
+                            <sureshot type="number">0</sureshot>
+                            <talent type="number">1</talent>
+                            <tiring type="number">0</tiring>
+                            <unreliable type="number">0</unreliable>
+                        </id-00001>
+                        <id-00002>
+                            <ammo type="number">0</ammo>
+                            <ap type="string">0</ap>
+                            <armorpiercing type="number">0</armorpiercing>
+                            <attack>
+                                <ballistic type="number">30</ballistic>
+                                <weapon type="number">55</weapon>
+                            </attack>
+                            <attack_meleetemp type="number">0</attack_meleetemp>
+                            <attack_rangedtemp type="number">0</attack_rangedtemp>
+                            <balanced type="number">0</balanced>
+                            <bestcheck type="number">0</bestcheck>
+                            <carried type="number">2</carried>
+                            <class type="string">Melee</class>
+                            <ctlink type="number">0</ctlink>
+                            <damagebonus type="string">-1</damagebonus>
+                            <damagedice type="string">1d6</damagedice>
+                            <defensive type="number">0</defensive>
+                            <experimental type="number">0</experimental>
+                            <fast type="number">1</fast>
+                            <goodcheck type="number">1</goodcheck>
+                            <group type="string">I+10 P-20</group>
+                            <impact type="number">0</impact>
+                            <location type="string">NA</location>
+                            <mightyblow type="number">1</mightyblow>
+                            <mightyshot type="number">0</mightyshot>
+                            <name type="string">Knife</name>
+                            <offhand type="number">0</offhand>
+                            <parry_temp type="number">0</parry_temp>
+                            <parryroll type="number">55</parryroll>
+                            <poorcheck type="number">0</poorcheck>
+                            <precise type="number">0</precise>
+                            <pummeling type="number">0</pummeling>
+                            <rangedsb type="number">0</rangedsb>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <shrapnel type="number">0</shrapnel>
+                            <slow type="number">0</slow>
+                            <snare type="number">0</snare>
+                            <sureshot type="number">0</sureshot>
+                            <talent type="number">1</talent>
+                            <tiring type="number">0</tiring>
+                            <unreliable type="number">0</unreliable>
+                        </id-00002>
+                        <id-00003>
+                            <ammo type="number">0</ammo>
+                            <ap type="string">0</ap>
+                            <armorpiercing type="number">0</armorpiercing>
+                            <attack>
+                                <ballistic type="number">30</ballistic>
+                                <weapon type="number">55</weapon>
+                            </attack>
+                            <attack_meleetemp type="number">0</attack_meleetemp>
+                            <attack_rangedtemp type="number">0</attack_rangedtemp>
+                            <balanced type="number">0</balanced>
+                            <bestcheck type="number">0</bestcheck>
+                            <carried type="number">2</carried>
+                            <class type="string">Melee</class>
+                            <ctlink type="number">0</ctlink>
+                            <damagebonus type="string">-1</damagebonus>
+                            <damagedice type="string">1d6</damagedice>
+                            <defensive type="number">0</defensive>
+                            <experimental type="number">0</experimental>
+                            <fast type="number">1</fast>
+                            <goodcheck type="number">1</goodcheck>
+                            <group type="string">WS-10 P-20</group>
+                            <impact type="number">0</impact>
+                            <location type="string">NA</location>
+                            <mightyblow type="number">1</mightyblow>
+                            <mightyshot type="number">0</mightyshot>
+                            <name type="string">whip</name>
+                            <offhand type="number">0</offhand>
+                            <parry_temp type="number">0</parry_temp>
+                            <parryroll type="number">55</parryroll>
+                            <poorcheck type="number">0</poorcheck>
+                            <precise type="number">0</precise>
+                            <pummeling type="number">0</pummeling>
+                            <rangedsb type="number">0</rangedsb>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <shrapnel type="number">0</shrapnel>
+                            <slow type="number">0</slow>
+                            <snare type="number">0</snare>
+                            <sureshot type="number">0</sureshot>
+                            <talent type="number">1</talent>
+                            <tiring type="number">0</tiring>
+                            <unreliable type="number">0</unreliable>
+                        </id-00003>
+                        <id-00004>
+                            <ammo type="number">20</ammo>
+                            <ap type="string">0</ap>
+                            <armorpiercing type="number">0</armorpiercing>
+                            <attack>
+                                <ballistic type="number">30</ballistic>
+                                <weapon type="number">55</weapon>
+                            </attack>
+                            <attack_meleetemp type="number">0</attack_meleetemp>
+                            <attack_rangedtemp type="number">0</attack_rangedtemp>
+                            <balanced type="number">0</balanced>
+                            <bestcheck type="number">0</bestcheck>
+                            <carried type="number">2</carried>
+                            <class type="string">Ranged</class>
+                            <ctlink type="number">0</ctlink>
+                            <damagebonus type="string">4</damagebonus>
+                            <damagedice type="string">1d6</damagedice>
+                            <defensive type="number">0</defensive>
+                            <experimental type="number">0</experimental>
+                            <fast type="number">1</fast>
+                            <goodcheck type="number">1</goodcheck>
+                            <impact type="number">0</impact>
+                            <location type="string">NA</location>
+                            <mightyblow type="number">0</mightyblow>
+                            <mightyshot type="number">0</mightyshot>
+                            <name type="string">Crossbow</name>
+                            <offhand type="number">0</offhand>
+                            <parry_temp type="number">0</parry_temp>
+                            <parryroll type="number">55</parryroll>
+                            <poorcheck type="number">0</poorcheck>
+                            <precise type="number">0</precise>
+                            <pummeling type="number">0</pummeling>
+                            <range type="string">32/64/300</range>
+                            <rangedsb type="number">0</rangedsb>
+                            <reload type="string">1</reload>
+                            <shortcut type="windowreference">
+                                <class />
+
+                                <recordname />
+
+                            </shortcut>
+                            <shrapnel type="number">0</shrapnel>
+                            <slow type="number">0</slow>
+                            <snare type="number">0</snare>
+                            <sureshot type="number">0</sureshot>
+                            <talent type="number">1</talent>
+                            <tiring type="number">0</tiring>
+                            <unreliable type="number">0</unreliable>
+                        </id-00004>
+                    </weaponlist>
+                    <weight type="string">130lbs</weight>
+                    <will_advtaken type="number">3</will_advtaken>
+                    <wnd_advtaken type="number">4</wnd_advtaken>
+                    <wnd_temp type="number">0</wnd_temp>
+                    <wounds type="number">4</wounds>
+                    <wp_temp type="number">0</wp_temp>
+                    <wpprevious type="number">10</wpprevious>
+                    <wpscheme type="number">30</wpscheme>
+                    <wptaken type="number">1</wptaken>
+                    <wptaken2 type="number">0</wptaken2>
+                    <wptaken3 type="number">0</wptaken3>
+                    <wptaken4 type="number">0</wptaken4>
+                    <wptaken5 type="number">0</wptaken5>
+                    <wptaken6 type="number">0</wptaken6>
+                    <wptaken7 type="number">0</wptaken7>
+                    <ws_advtaken type="number">2</ws_advtaken>
+                    <ws_temp type="number">0</ws_temp>
+                    <wsprevious type="number">10</wsprevious>
+                    <wsscheme type="number">20</wsscheme>
+                    <wstaken type="number">1</wstaken>
+                    <wstaken2 type="number">0</wstaken2>
+                    <wstaken3 type="number">0</wstaken3>
+                    <wstaken4 type="number">0</wstaken4>
+                    <wstaken5 type="number">0</wstaken5>
+                    <wstaken6 type="number">0</wstaken6>
+                    <wstaken7 type="number">0</wstaken7>
+                    <xp>
+                        <totalspent type="number">1500</totalspent>
+                    </xp>
+                    <xplefttospend type="number">0</xplefttospend>
+                    <xpspent>
+                        <id-00001>
+                            <name type="string">Career Tomb Robber Advances</name>
+                            <pointsspent type="number">600</pointsspent>
+                        </id-00001>
+                        <id-00002>
+                            <name type="string">Sp Wp Whip</name>
+                            <pointsspent type="number">100</pointsspent>
+                        </id-00002>
+                        <id-00003>
+                            <name type="string">T+1, Dex +10, WS +10, A+1, Disarm, Strike Mighty Blow</name>
+                            <pointsspent type="number">600</pointsspent>
+                        </id-00003>
+                        <id-00006>
+                            <name type="string">Scale Sheer Surface</name>
+                            <pointsspent type="number">100</pointsspent>
+                        </id-00006>
+                        <id-00007>
+                            <name type="string">Secret Language Classical</name>
+                            <pointsspent type="number">100</pointsspent>
+                        </id-00007>
+                    </xpspent>
+                </character>
+            </root>
+
+        </xml>
+    </div>
 </body>
-</html>
-<!--
-cdcatalog.xml
+    </html>
 
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<catalog>
-  <cd>
-    <title>Empire Burlesque</title>
-    <artist>Bob Di.</artist>
-    <country>USA</country>
-    <company>Columbia</company>
-    <price>10.90</price>
-    <year>1985</year>
-  </cd>
-</catalog>
 
-cdcatalog2.xml
 
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<catalog>
-  <cd>
-    <title>Some title </title>
-    <artist>Some artist</artist>
-    <country>USA</country>
-    <company>Columbia</company>
-    <price>10.90</price>
-    <year>1985</year>
-  </cd>
-    <cd>
-    <title>Some othertitle </title>
-    <artist>The artist</artist>
-    <country>USA</country>
-    <company>Columbia</company>
-    <price>11.40</price>
-    <year>1985</year>
-  </cd>
-</catalog>
-
-cdcatalog.xsl
-
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<xsl:stylesheet version="1.0"
-xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
-<xsl:template match="/">
-  <html>
-  <body>
-  <h2>My CD Collection</h2>
-  <table border="1">
-    <tr bgcolor="#9acd32">
-      <th align="left">Title</th>
-      <th align="left">Artist</th>
-    </tr>
-    <xsl:for-each select="catalog/cd">
-    <tr>
-      <td><xsl:value-of select="title" /></td>
-      <td><xsl:value-of select="artist" /></td>
-    </tr>
-    </xsl:for-each>
-  </table>
-  </body>
-  </html>
-</xsl:template>
-</xsl:stylesheet>
--->
