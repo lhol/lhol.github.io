@@ -1,15 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:saxon="http://saxon.sf.net/">
-<xsl:output
-	method = "xml"
-	encoding = "iso-8859-1"
-/>
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:template match="/">
   <html>
   <body>
-		<xsl:for-each select="//character">
+	  <xsl:for-each select="//character">
+
+		  <table>
+			  <tbody>
+				  <tr>
+					  <th>Name</th>
+					  <th>Starting</th>
+					  <th>Improvement</th>
+					  <th>Advance Scheme</th>
+					  <th>Taken (check)</th>
+					  <th>Current Value</th>
+				  </tr>
+				  <tr>
+					  <td>
+						  <xsl:value-of select="abilities/base_weapon" />
+					  </td>
+					  <td>
+						  <xsl:value-of select="abilities/adv_weapon" />
+					  </td>
+					  <td>
+						  <xsl:value-of select="abilities/wpscheme" />
+					  </td>
+					  <td>
+						  <xsl:value-of select="wptaken" />
+					  </td>
+					  <td>
+						  <xsl:value-of select="weapon" />
+					  </td>
+				  </tr>
+			  </tbody>
+		  </table>
+
             
             <h2>Skills</h2>
             <table>
