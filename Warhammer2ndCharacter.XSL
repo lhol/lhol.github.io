@@ -70,11 +70,11 @@
 			</xsl:for-each>
             </table>
 
-
-            
+			<!-- End of Character -->
+		</xsl:for-each>
 
 </body>
 </html>
-
+  </xsl:template>
   
 </xsl:stylesheet>
